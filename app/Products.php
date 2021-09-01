@@ -18,7 +18,6 @@ if (empty($_SESSION['cart'])) {
 $c = new Cart($_SESSION["cart"]);
 $c->displayCartList();
 $cnt = count($_SESSION["cart"]);
-var_dump($cnt);
 
 //handlers effectively for actions 
 if (isset($_GET['add'])){    

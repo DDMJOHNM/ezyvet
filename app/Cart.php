@@ -47,8 +47,6 @@ class Cart
    public function deleteFromCart($name,$price) {
     //removes specific array from array
         
-       $arr = array_search($name,$_SESSION["cart"]);
-        var_dump($arr);
         array_splice($_SESSION["cart"], array_search($name,$_SESSION["cart"] ), 1);        
         $_SESSION["total"] -= $price;         
         echo 'item deleted from cart ',$name;
@@ -57,7 +55,7 @@ class Cart
     }
     
     public function displayCartList() {
-        var_dump($this->cart);   
+       
         //Output html template        
          echo "<h2>Cart</h2>";
          echo "<table>";
