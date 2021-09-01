@@ -15,17 +15,30 @@ class Cart
      
    }
 
-   public function addToCart($name,$price) {    
+   public function addToCart($name,$price,$quantity) {   
     //checks not in cart before adding    
-    if(in_array(array('name'=>$name,'quantity'=>1,'price'=>$price),$_SESSION["cart"]) === false){
-        array_push($_SESSION["cart"],array('name'=>$name,'quantity'=>1,'price'=>$price));  
-        $_SESSION["total"] += $price;         
+  
+ 
+   if(in_array(array('name'=>$name,'quantity'=>$quantity,'price'=>$price),$_SESSION["cart"]) === false){
+       array_push($_SESSION["cart"],array('name'=>$name,'quantity'=>$quantity,'price'=>$price));  
+       $_SESSION["total"] += $price;     
         echo 'item added to cart ',$name;
         header("Location: /");
         exit(0);  
         
     } else {
-        echo 'item cannot be added to cart ',$name;
+        //if in cart increase quantity and total
+          $cnt = count($_SESSION["cart"]);
+          for ($i = 0; $i < $cnt; ++$i) {
+            if($_SESSION["cart"][$i]["name"] == $name){
+                $_SESSION["cart"][$i]["quantity"] = $quantity;
+                $_SESSION["total"] += $price;        
+            }    
+        }
+
+        echo 'item added to cart & qty increased';
+         header("Location: /");
+         exit(0);  
     }
 
 
@@ -33,15 +46,18 @@ class Cart
 
    public function deleteFromCart($name,$price) {
     //removes specific array from array
-    array_splice($_SESSION["cart"], array_search($name,$_SESSION["cart"] ), 1);
-    $_SESSION["total"] -= $price;         
-    echo 'item deleted from cart ',$name;
-    header("Location: /");
-    exit(0);  
+        
+       $arr = array_search($name,$_SESSION["cart"]);
+        var_dump($arr);
+        array_splice($_SESSION["cart"], array_search($name,$_SESSION["cart"] ), 1);        
+        $_SESSION["total"] -= $price;         
+        echo 'item deleted from cart ',$name;
+        header("Location: /");
+        exit(0);  
     }
     
     public function displayCartList() {
-          
+        var_dump($this->cart);   
         //Output html template        
          echo "<h2>Cart</h2>";
          echo "<table>";

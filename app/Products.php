@@ -17,11 +17,24 @@ if (empty($_SESSION['cart'])) {
 //initialise cart
 $c = new Cart($_SESSION["cart"]);
 $c->displayCartList();
-
+$cnt = count($_SESSION["cart"]);
+var_dump($cnt);
 
 //handlers effectively for actions 
-if (isset($_GET['add'])){
-    $c->addToCart($_GET['name'],$_GET['price']);
+if (isset($_GET['add'])){    
+
+    if($cnt > 0){   
+        for ($i = 0; $i < $cnt; ++$i) {
+            if($_SESSION["cart"][$i]["name"] == $_GET['name']){
+                $c->addToCart($_GET['name'],$_GET['price'], $_SESSION["cart"][$i]["quantity"]+=1);           
+            }   
+        }
+
+    }
+    //just add it if it isnt there 
+    $c->addToCart($_GET['name'],$_GET['price'],1);  
+   
+   
 }
 
 if (isset($_GET['delete'])){
